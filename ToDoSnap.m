@@ -45,8 +45,8 @@ for i = 1:size(bboxes,1)
     J= imcrop(IFaces,bboxes(i,:));
 end
 [rows columns numberOfColorChannels] = size(J);
-if numberOfColorChannels > 1
-    I = rgb2gray (J);
-end
-
+    if numberOfColorChannels > 1
+        I = rgb2gray (J);
+    end
+Img=I;
 end

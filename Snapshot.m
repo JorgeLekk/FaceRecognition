@@ -41,7 +41,8 @@ end
 closePreview(cam);
 clear('cam');
 IFaces = insertObjectAnnotation(I, 'rectangle', bboxes, 'Face');
-figure, imshow(IFaces), title('Detected faces');
+% Uncomment to show the features
+% figure, imshow(IFaces), title('Detected faces');
 Img = I;
 
 end

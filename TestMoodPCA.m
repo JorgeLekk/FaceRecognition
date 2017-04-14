@@ -196,7 +196,7 @@ end
 NotFinished = false;
 
 while ~NotFinished 
-
+    close (GUI_MoodPCA)
     answer2 = BoxMenu ('Let´s trying to find Yourself','Do you want a new picture?');
 
         switch answer2
@@ -217,14 +217,16 @@ while ~NotFinished
                
             case 0
               close all
-              uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal')); 
+              uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal'));
+              close (GUI_MoodPCA)
               return;  
                 
         end 
 
 testFace = imresize(testFace,[dim dim]);
 testFace   =  im2single(testFace);
-figure(6), imshow(testFace,'Initialmagnification','fit'); title('Test Face')
+% uncommen to show the figure
+% figure(6), imshow(testFace,'Initialmagnification','fit'); title('Test Face')
 Average_face = testFace(:)-averageImg(:); % normilized face
 for(i=1:nsel)
   face_weight(i)  =  sum(Average_face.* Eigenfaces{xci(i)}(:)) ;
@@ -238,6 +240,8 @@ for img_num=1:num
     end
     diffWeights(img_num) =   sqrt( face_sumcur);
 end
+%    Commen to show all figures
+    close all
     [val in]=min(diffWeights);
     diffWeights  =diffWeights.'
     [min2, pos] = sort(diffWeights(:));
@@ -252,21 +256,26 @@ end
     end
 
 %% Print Results
-    % Eigen Results
-             if diff2 < 100
-                figure('Position', [2*ancho 10 ancho alto]);  
-                imshow([Img.data{in},Img.data{in2}]);
-                title(['Your mood is...' Img.mood{in} '   and   ' Img.mood{in2}]);
-                figure('Position', [2*ancho 10 ancho 2.7*alto]);  
-                imshow([Img.emoji{in}, Img.emoji{in2}]);
-                title(['Your mood is...' Img.mood{in} '   and   ' Img.mood{in2}]);
-             else   
-                figure('Position', [2*ancho 10 ancho alto]), imshow(Img.data{in}),title(['Your mood is...' Img.mood{in}]);
-                figure('Position', [2*ancho 10 ancho 2.7*alto]), imshow(Img.emoji{in}),title(['Your mood is...' Img.mood{in}]);
-             end
+%  Uncommen to see results
+%     % Eigen Results
+%              if diff2 < 100
+%                 figure('Position', [2*ancho 10 ancho alto]);  
+%                 imshow([Img.data{in},Img.data{in2}]);
+%                 title(['Your mood is...' Img.mood{in} '   and   ' Img.mood{in2}]);
+%                 figure('Position', [2*ancho 10 ancho 2.7*alto]);  
+%                 imshow([Img.emoji{in}, Img.emoji{in2}]);
+%                 title(['Your mood is...' Img.mood{in} '   and   ' Img.mood{in2}]);
+%              else   
+%                 figure('Position', [2*ancho 10 ancho alto]), imshow(Img.data{in}),title(['Your mood is...' Img.mood{in}]);
+%                 figure('Position', [2*ancho 10 ancho 2.7*alto]), imshow(Img.emoji{in}),title(['Your mood is...' Img.mood{in}]);
+%              end
 
 
+% See them with GUI
 
+run GUI_MoodPCA.m
+
+pause (10)
 
 
 

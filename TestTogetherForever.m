@@ -15,6 +15,9 @@ close all
 
 
 %% See if its necessary to do new snaps
+name = inputdlg('Introduzca su nombre por favor: ','Bienvenido');
+
+
 
 Snap_folder =0;
 
@@ -223,7 +226,7 @@ end
 NotFinished = false;
 
 while ~NotFinished 
-
+    close (GUI_TogetherForever)
     answer2 = BoxMenu ('Let´s trying to find Yourself','Do you want a new picture?');
     
     switch answer2
@@ -246,6 +249,7 @@ while ~NotFinished
             case 0
               close all
               uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal')); 
+              close (GUI_TogetherForever)
               return;  
                 
     end 
@@ -254,7 +258,8 @@ while ~NotFinished
     %% EigenFaces 
     testFace = imresize(testFace,[dim dim]);
     testFace   =  im2single(testFace);
-    figure(6), imshow(testFace,'Initialmagnification','fit'); title('Test Face')
+%     Uncommen to show the image
+%     figure(6), imshow(testFace,'Initialmagnification','fit'); title('Test Face')
     Average_face = testFace(:)-averageImg(:); % normilized face
     for(i=1:nsel)
       face_weight(i)  =  sum(Average_face.* Eigenfaces{xci(i)}(:)) ;
@@ -268,6 +273,8 @@ while ~NotFinished
         end
         diffWeights(img_num) =   sqrt( face_sumcur);
     end
+%     Commen to show figures
+    close all    
     
     % Difference of EigenFaces
     [val in]=min(diffWeights);
@@ -282,48 +289,53 @@ while ~NotFinished
     personLabel = predict (faceClassifier, hogFeature);
     value = char(personLabel);
     
-    %% Print Results
+%% Load EmojiDatabase
     EmojiDatabase = imageSet('Emojis','recursive');
 	for i=1:EmojiDatabase.Count
         Img.emoji{i} = read(EmojiDatabase(1),i);
     end
 	
-    
-    switch value
-        case 'You'
-            % Eigen Results
-             if diff2 < 100
-                figure('Position', [2*ancho 10 ancho alto]);  
-                imshow([Img.data{in},Img.data{in2}]);
-                title(['Your mood is...' Img.mood{in} '   and   ' Img.mood{in2}]);
-             else   
-                figure('Position', [2*ancho 10 ancho alto]), imshow(Img.data{in}),title(['Your mood is...' Img.mood{in}]);
-             end
-            %HOGG Results
-            h= msgbox(personLabel,'And the result is...');
-            set(h, 'position', [100 440 400 100]); %makes box bigger
-            ah = get( h, 'CurrentAxes' );
-            ch = get( ah, 'Children' );
-            set( ch, 'FontSize', 14 ); %makes text bigger
-    
-        case 'NotYou'
-            % Eigen Results
-             if diff2 < 100
-    %              Modificar
-                figure('Position', [2*ancho 10 ancho alto]);  
-                imshow([Img.emoji{in},Img.emoji{in2}]);
-                title(['Your mood is...' Img.mood{in} '   and   ' Img.mood{in2}]);
-             else   
-                figure('Position', [2*ancho 10 ancho alto]), imshow(Img.emoji{in}),title(['Your mood is...' Img.mood{in}]);
-             end
-            %HOGG Results
-            h= msgbox(personLabel,'And the result is...');
-            set(h, 'position', [100 440 400 100]); %makes box bigger
-            ah = get( h, 'CurrentAxes' );
-            ch = get( ah, 'Children' );
-            set( ch, 'FontSize', 14 ); %makes text bigger
-        
-    end
-    
+ %% Print Results 
+    %  Uncommen to show results
+    %     switch value
+    %         case 'You'
+    %             % Eigen Results
+    %              if diff2 < 100
+    %                 figure('Position', [2*ancho 10 ancho alto]);  
+    %                 imshow([Img.data{in},Img.data{in2}]);
+    %                 title(['Your mood is...' Img.mood{in} '   and   ' Img.mood{in2}]);
+    %              else   
+    %                 figure('Position', [2*ancho 10 ancho alto]), imshow(Img.data{in}),title(['Your mood is...' Img.mood{in}]);
+    %              end
+    %             %HOGG Results
+    %             h= msgbox(personLabel,'And the result is...');
+    %             set(h, 'position', [100 440 400 100]); %makes box bigger
+    %             ah = get( h, 'CurrentAxes' );
+    %             ch = get( ah, 'Children' );
+    %             set( ch, 'FontSize', 14 ); %makes text bigger
+    %     
+    %         case 'NotYou'
+    %             % Eigen Results
+    %              if diff2 < 100
+    %     %              Modificar
+    %                 figure('Position', [2*ancho 10 ancho alto]);  
+    %                 imshow([Img.emoji{in},Img.emoji{in2}]);
+    %                 title(['Your mood is...' Img.mood{in} '   and   ' Img.mood{in2}]);
+    %              else   
+    %                 figure('Position', [2*ancho 10 ancho alto]), imshow(Img.emoji{in}),title(['Your mood is...' Img.mood{in}]);
+    %              end
+    %             %HOGG Results
+    %             h= msgbox(personLabel,'And the result is...');
+    %             set(h, 'position', [100 440 400 100]); %makes box bigger
+    %             ah = get( h, 'CurrentAxes' );
+    %             ch = get( ah, 'Children' );
+    %             set( ch, 'FontSize', 14 ); %makes text bigger
+    %         
+    %     end
+
+% Show results with GUI
+        run GUI_TogetherForever.m
+        pause (10)
+
 
 end

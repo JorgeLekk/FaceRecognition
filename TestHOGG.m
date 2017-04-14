@@ -127,7 +127,7 @@ while ~NotFinished
     %% Show Matlab GUI
     close all
     run GUI_HogFeatures.m
-    pause (5)
+    pause (10)
 
         %% Decimos si queremos terminar de hacer pruebas
         answer3 = BoxMenu ('Menu', 'Do you want More Snaps?');    

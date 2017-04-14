@@ -177,7 +177,7 @@ end
 NotFinished = false;
 
 while ~NotFinished 
-
+    close (GUI_PCA)
     answer2 = BoxMenu ('Let´s trying to find Yourself','Do you want a new picture?');
 
         switch answer2
@@ -199,13 +199,16 @@ while ~NotFinished
             case 0
               close all
               uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal')); 
-              return;  
+              return; 
+              close (GUI_PCA)
                 
-        end 
-
+        end
+%         Commen to show images
+        close all
 testFace = imresize(testFace,[dim dim]);
 testFace   =  im2single(testFace);
-figure(6), imshow(testFace,'Initialmagnification','fit'); title('Test Face')
+%  Uncommen to show the image
+% figure(6), imshow(testFace,'Initialmagnification','fit'); title('Test Face')
 Average_face = testFace(:)-averageImg(:); % normilized face
 for(i=1:nsel)
   face_weight(i)  =  sum(Average_face.* Eigenfaces{xci(i)}(:)) ;
@@ -220,6 +223,12 @@ for img_num=1:num
     diffWeights(img_num) =   sqrt( face_sumcur);
 end
 [val in]=min(diffWeights);
-diffWeights  =diffWeights.'
-figure('Position', [2*ancho 10 ancho alto]), imshow(Img.data{in}),title(['You are THIS ONE']);
+diffWeights  = diffWeights.'
+
+run GUI_PCA.m
+
+pause (10);
+
+% Uncommen to show the picture
+% figure('Position', [2*ancho 10 ancho alto]), imshow(Img.data{in}),title(['You are THIS ONE']);
 end

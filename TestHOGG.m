@@ -34,8 +34,10 @@ Snap_folder =0;
 %     2 para la webCam de mi tablet
             CamType=1;
             for i=1:num
-                
-               I=ToDoSnap(CamType);
+               [Img, IFaces, bboxes] = Snapshot (CamType);
+               I = HOGFeatures;
+%                Añadidas las otras lineas para ver si funciona
+%                I=ToDoSnap(CamType);
                I=ReSize(I);
                imwrite(I,['Foto_', num2str(i),'.jpg']);
                movefile(strcat('Foto_', num2str(i),'.jpg'),Snap_folder);
@@ -106,35 +108,45 @@ CamType=1;
 NotFinished = false;
 
 while ~NotFinished 
-
+    pause (3)
     [I, IFaces, bboxes] = Snapshot (CamType);
 
     %% Sacamos las HOGFeatures de la foto
     [Icrop, hogFeature1, visualization1] = HOGFeatures (IFaces, bboxes);
     %% Probamos si funciona el clasificador
-    personLabel = predict (faceClassifier, hogFeature1)
+    personLabel = predict (faceClassifier, hogFeature1);
+    
 % Configuration of msgbox
-    h= msgbox(personLabel,'And the result is...');
-    set(h, 'position', [100 440 400 100]); %makes box bigger
-    ah = get( h, 'CurrentAxes' );
-    ch = get( ah, 'Children' );
-    set( ch, 'FontSize', 20 ); %makes text bigger
-    %% Decimos si queremos terminar de hacer pruebas
-    answer3 = BoxMenu ('Menu', 'Do you want More Snaps?');    
+%     h= msgbox(personLabel,'And the result is...');
+%     set(h, 'position', [100 440 400 100]); %makes box bigger
+%     ah = get( h, 'CurrentAxes' );
+%     ch = get( ah, 'Children' );
+%     set( ch, 'FontSize', 20 ); %makes text bigger
+    
+    
+    %% Show Matlab GUI
+    close all
+    run GUI_HogFeatures.m
+    pause (5)
 
-    switch answer3
-    case 1
-        NotFinished = false;
-    case 2
-        close all
-        uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal'));
-        NotFinished = true;
-        return;
-    case 0
-        close all
-        uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal'));
-        NotFinished = true;
-        return;
-    end
+        %% Decimos si queremos terminar de hacer pruebas
+        answer3 = BoxMenu ('Menu', 'Do you want More Snaps?');    
+
+        switch answer3
+        case 1
+            NotFinished = false;
+        case 2
+            close all
+            uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal'));
+            NotFinished = true;
+            close (GUI_HogFeatures)
+            return;
+        case 0
+            close all
+            uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal'));
+            NotFinished = true;
+            close (GUI_HogFeatures)
+            return;
+        end
 
 end

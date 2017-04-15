@@ -34,7 +34,7 @@
  
 
             for i=1:M
-               uiwait(msgbox({'Let`s' Img.mood{i} 'snap'}, 'Be Smart plz','warn','modal'));
+               uiwait(msgbox('Let`s snap', 'Be Smart plz','warn','modal'));
                [Img, IFaces, bboxes] = Snapshot (CamType);
                I = HOGFeatures(IFaces,bboxes);
                I=ReSize(I);

@@ -22,7 +22,7 @@ function varargout = GUI_HogFeatures(varargin)
 
 % Edit the above text to modify the response to help GUI_HogFeatures
 
-% Last Modified by GUIDE v2.5 14-Apr-2017 13:49:26
+% Last Modified by GUIDE v2.5 15-Apr-2017 14:44:39
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -79,17 +79,33 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-text = evalin('base', 'personLabel');
+% Import images from workspace
 I1 = evalin ('base', 'Icrop');
 I2 = evalin ('base', 'Img');
-
+% Import other properties
+value = evalin ('base', 'value');
+username = evalin ('base', 'name');
+% Import emojis from workspacE
+emoji1 = evalin ('base', 'emoji1');
+emoji2 = evalin ('base', 'emoji2');
 
 axes(handles.axes1)
 imshow(I1)
 axes(handles.axes2)
 imshow(I2)
 
-set(handles.text2, 'String', text)
+switch value
+    case 'You'
+        axes (handles.axes3)
+        imshow(emoji1)
+        set(handles.text2, 'String', ['Welcome  '  username ' !!!!'])
+    
+    case 'NotYou'
+        axes (handles.axes3)
+        imshow(emoji2)
+        set(handles.text2, 'String', ['You are not  '  username ' !!!!'])
+    
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -115,3 +131,12 @@ function axes2_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: place code in OpeningFcn to populate axes2
+
+
+% --- Executes during object creation, after setting all properties.
+function axes3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axes3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: place code in OpeningFcn to populate axes3

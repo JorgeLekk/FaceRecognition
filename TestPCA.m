@@ -2,10 +2,15 @@
 % TestPCA for finding yourself from 6 o 9 photos of different people
 %       using PCA Eigenfaces
 
-% Preparing
-clc
-clear
-close all
+% Uncommen to do this test apart
+% clc
+% clear
+% close all
+
+%% WebCam setup
+%     1 para la webCam normal
+%     2 para la webCam de mi tablet
+            CamType=1;
 
 %% To see if its necessary to do new snaps
 
@@ -26,45 +31,69 @@ close all
             end
             Snap_folder = 'PCATest/Training';
  
-%     Elegir el tipo de webCam 
-%     1 para la webCam normal
-%     2 para la webCam de mi tablet
-            CamType=1;
+
             for i=1:M
-                
-               I=ToDoSnap(CamType);
+               uiwait(msgbox({'Let`s' Img.mood{i} 'snap'}, 'Be Smart plz','warn','modal'));
+               [Img, IFaces, bboxes] = Snapshot (CamType);
+               I = HOGFeatures(IFaces,bboxes);
+%                I=ToDoSnap(CamType);
                I=ReSize(I);
                imwrite(I,['Foto_', num2str(i),'.jpg']);
                movefile(strcat('Foto_', num2str(i),'.jpg'),Snap_folder);
                 
             end
-            TrainingPCA = imageSet(Snap_folder,'recursive');
+%             TrainingPCA = imageSet(Snap_folder,'recursive');
         end
         
         
         if answer1 == 2
             % Snaps should be at "PCATest/SavedTraining"
             uiwait(msgbox('Photos have to be at "PCATest/SavedTraining" ', 'WARNING','warn','modal'));
+            folder_name = uigetdir('PCATest/SavedTraining','choose pool folder');
+%             TrainingPCA = imageSet(Snap_folder,'recursive');
             Snap_folder = 'PCATest/SavedTraining';
-            TrainingPCA = imageSet(Snap_folder,'recursive');
+            
         end
         
         
 %   Se sale del programa        
         if answer1 == 0
+           GUI_Menu
            return; 
         end
         
         close all
 
+%% Create the imageSet and copying 
 
+ if answer1 == 2
+        MeDatabase = imageSet(folder_name,'recursive');
+        % Convertimos todas las fotos al mismo tamaño y creamos una copia en el
+        % directorio que se ha elegido
+        for i=1:MeDatabase.Count
+            % Lectura de la imagen
+            I = read(MeDatabase(1),i);
+            I = ReSize (I);
+            imwrite(I,['Foto_', num2str(i),'.jpg']);
+            movefile(strcat('Foto_', num2str(i),'.jpg'),Snap_folder);
+        end
+ end        
+
+%% Show a montage of the training photos
+FaceDatabase = imageSet(Snap_folder, 'recursive');
+figure;
+montage(FaceDatabase.ImageLocation);
+title('Images of EveryONE');
+
+%% Start PCA
+ 
 % TrainingPCA = imageSet('PCATest/Training','recursive');
-dim= size(read(TrainingPCA(1),1),1); % 224  ; % image size
-M=TrainingPCA.Count; %9 o 6;        % number faces
+dim= size(read(FaceDatabase(1),1),1); % 224  ; % image size
+M=FaceDatabase.Count; %9 o 6;        % number faces
 
 for i=1:M
     
-    Img.data{i} = read(TrainingPCA(1),i); %Creating an structure with pixel data
+    Img.data{i} = read(FaceDatabase(1),i); %Creating an structure with pixel data
 
 end
 save classFile Img;
@@ -82,27 +111,23 @@ ancho = scrsz(3);
 alto = scrsz (4);
 ancho = round (ancho/3);
 alto = round (alto/2)-40;
-    % Chosing CamType 
-%     1 para la webCam normal
-%     2 para la webCam de mi tablet
-CamType=1;
 
 
-
-% TrainingPCA = imageSet('PCATest','recursive');
-num=TrainingPCA.Count;
-dim=size(read(TrainingPCA(1),1),1);
+num=FaceDatabase.Count;
+dim=size(read(FaceDatabase(1),1),1);
    
     
 if num==9
     z= [ Img.data{1}  Img.data{2}    Img.data{3}; Img.data{4}     Img.data{5}  Img.data{6};...
         Img.data{7} Img.data{8} Img.data{9}];
-    figure(1),imshow(z,'Initialmagnification','fit');title('Faces')
+    %     Uncommen to show the figure
+%     figure(1),imshow(z,'Initialmagnification','fit');title('Faces')
 end
 
 if num==6
     z= [ Img.data{1}  Img.data{2}    Img.data{3}; Img.data{4}     Img.data{5}  Img.data{6}];
-    figure(1),imshow(z,'Initialmagnification','fit');title('Faces')
+    %     Uncommen to show the figure
+%     figure(1),imshow(z,'Initialmagnification','fit');title('Faces')
 end
 
 
@@ -113,7 +138,8 @@ for i=1:num
     averageImg   = averageImg  + (1/num)*Img.data{i};
 end
 
-figure(2),imshow(averageImg,'Initialmagnification','fit');title('average')
+% Uncommen to show the figure
+% figure(2),imshow(averageImg,'Initialmagnification','fit');title('average')
 
 %% Normalize (removing mean)
 for i=1:num
@@ -123,12 +149,14 @@ end
 if num == 9
     z  = [ Img.dataAvg{1}  Img.dataAvg{2}   Img.dataAvg{3}  ; Img.dataAvg{4}     Img.dataAvg{5}  Img.dataAvg{6};...
         Img.dataAvg{7}     Img.dataAvg{8}  Img.dataAvg{9}];
-    figure(3),imshow(z,'Initialmagnification','fit');title('z average')
+%     Uncommen to show the figure
+%     figure(3),imshow(z,'Initialmagnification','fit');title('z average')
 end
 
 if num == 6
     z  = [ Img.dataAvg{1}  Img.dataAvg{2}   Img.dataAvg{3}  ; Img.dataAvg{4}     Img.dataAvg{5}  Img.dataAvg{6}];
-    figure(3),imshow(z,'Initialmagnification','fit');title('z average')
+%     Uncommen to show the figure
+%     figure(3),imshow(z,'Initialmagnification','fit');title('z average')
 end
 
 %% Calc Eigenvectors
@@ -139,7 +167,8 @@ for i=1:num
 end
 % Covariance matrix small dimension (transposed)
 Cov_mat = A'*A;
-figure(4),imagesc(Cov_mat);title('covariance')
+% Uncommen to show the figure
+% figure(4),imagesc(Cov_mat);title('covariance')
 
 %% Eigenvectros  in small dimension
 [ Eigvec_V, Eigval_D ]  = eig(Cov_mat);% v num*num e num*num only diagonal 4 eigen values
@@ -156,13 +185,15 @@ diag_eigval=diag(Eigval_D);
 
 if num == 6
     z  = [ Eigenfaces{xci(1)}  Eigenfaces{xci(2)}   Eigenfaces{xci(3)} ; Eigenfaces{xci(4)}     Eigenfaces{xci(5)}   Eigenfaces{xci(6)}];
-    figure(5),imshow(z,'Initialmagnification','fit');title('Eigenfaces')
+    % Uncommen to show the figure
+%     figure(5),imshow(z,'Initialmagnification','fit');title('Eigenfaces')
 end
 
 if num == 9
     z  = [ Eigenfaces{xci(1)}  Eigenfaces{xci(2)}   Eigenfaces{xci(3)} ; Eigenfaces{xci(4)}     Eigenfaces{xci(5)}   Eigenfaces{xci(6)};...
        Eigenfaces{xci(7)}  Eigenfaces{xci(8)}   Eigenfaces{xci(9)} ];
-    figure(5),imshow(z,'Initialmagnification','fit');title('Eigenfaces')
+   % Uncommen to show the figure 
+%    figure(5),imshow(z,'Initialmagnification','fit');title('Eigenfaces')
 end
 %% Weights
 nsel=M% select  eigen faces
@@ -199,11 +230,12 @@ while ~NotFinished
             case 0
               close all
               uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal')); 
-              return; 
               close (GUI_PCA)
-                
+              GUI_Menu
+              return; 
+                        
         end
-%         Commen to show images
+% Commen to show images
         close all
 testFace = imresize(testFace,[dim dim]);
 testFace   =  im2single(testFace);
@@ -223,9 +255,9 @@ for img_num=1:num
     diffWeights(img_num) =   sqrt( face_sumcur);
 end
 [val in]=min(diffWeights);
-diffWeights  = diffWeights.'
+diffWeights  = diffWeights.';
 
-run GUI_PCA.m
+GUI_PCA
 
 pause (10);
 

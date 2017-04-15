@@ -5,10 +5,26 @@
 
 
 
-clc
-clear
-close all
+% Uncommen to do this test apart
+% clc
+% clear
+% close all
+% name = []
 
+%% WebCam setup
+%     1 para la webCam normal
+%     2 para la webCam de mi tablet
+            CamType=1;
+
+% Load EmojiDatabase for results
+    emoji1 = imread('Emojis/1.png');
+    emoji2 = imread('Emojis/4.png');
+
+%% Name Verification
+name;
+if isempty(name) == 1
+    name = inputdlg('Introduzca su nombre por favor: ','Bienvenido');
+end
 %% To see if its necessary to do new snaps
 
 Snap_folder =0;
@@ -27,15 +43,13 @@ Snap_folder =0;
                     num = 9;
             end
             
-            Snap_folder = 'HOGGTest/Repositorio/Me';
+            Snap_folder = 'HOGGTest/Repositorio/You';
  
-%     Elegir el tipo de webCam 
-%     1 para la webCam normal
-%     2 para la webCam de mi tablet
-            CamType=1;
+
             for i=1:num
+                uiwait(msgbox({'Let`s' Img.mood{i} 'snap'}, 'Be Smart plz','warn','modal'));
                [Img, IFaces, bboxes] = Snapshot (CamType);
-               I = HOGFeatures;
+               I = HOGFeatures(IFaces, bboxes);
 %                Añadidas las otras lineas para ver si funciona
 %                I=ToDoSnap(CamType);
                I=ReSize(I);
@@ -51,13 +65,14 @@ Snap_folder =0;
             uiwait(msgbox('Choose "Prueba Folder" PLZ', 'Be Smart plz','warn','modal'));
             disp('Selección de Repositorio de tus fotos, sugerencia "Prueba"');
             folder_name = uigetdir('HOGGTest/Prueba','selecciona el repositorio');
-            Snap_folder = 'HOGGTest/Repositorio/Me';
+            Snap_folder = 'HOGGTest/Repositorio/You';
             
         end
         
         
 %  Se sale del programa        
         if answer1 == 0
+           GUI_Menu
            return; 
         end
         
@@ -96,14 +111,10 @@ for i=1:size(TrainingDatabase,2) % Para contar los 41 Folders
     personIndex{i} = TrainingDatabase(i).Description;
 end
 
-%% Se crea el clasificador usando fitcecoc
+%% Creating class using fitcecoc
 faceClassifier = fitcecoc(trainingFeatures,trainingLabel);
 
-% Para el final
-%% Elegir el tipo de webCam 
-%     1 para la webCam normal
-%     2 para la webCam de mi tablet
-CamType=1;
+%% Classify new IMG
 
 NotFinished = false;
 
@@ -111,10 +122,11 @@ while ~NotFinished
     pause (3)
     [I, IFaces, bboxes] = Snapshot (CamType);
 
-    %% Sacamos las HOGFeatures de la foto
+    %% HOG Features from image
     [Icrop, hogFeature1, visualization1] = HOGFeatures (IFaces, bboxes);
-    %% Probamos si funciona el clasificador
+    %% testing the classifier
     personLabel = predict (faceClassifier, hogFeature1);
+    value = char(personLabel);
     
 % Configuration of msgbox
 %     h= msgbox(personLabel,'And the result is...');
@@ -146,6 +158,7 @@ while ~NotFinished
             uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal'));
             NotFinished = true;
             close (GUI_HogFeatures)
+            GUI_Menu
             return;
         end
 

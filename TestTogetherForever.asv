@@ -78,7 +78,6 @@ mood9 = {'Happy', 'Bored', 'Crazy', 'Angry', 'Sleepy', 'Sad', 'Smart' , 'Thankfu
         
 %  Se sale del programa        
         if answer1 == 0
-           GUI_Menu
            return; 
         end
         
@@ -117,7 +116,7 @@ for i=1:size(TrainingDatabase,2) % Para contar los 41 Folders
     personIndex{i} = TrainingDatabase(i).Description;
 end
 
-%% Creating class using fitcecoc
+%% Se crea el clasificador usando fitcecoc
 faceClassifier = fitcecoc(trainingFeatures,trainingLabel);
 
 %% Start MoodPCA Part
@@ -164,8 +163,8 @@ for i=1:num
     Img.data{i} = im2single(Img.data{i});
     averageImg   = averageImg  + (1/num)*Img.data{i};
 end
-% Uncommen to show the figure
-%figure(2),imshow(averageImg,'Initialmagnification','fit');title('average')
+
+figure(2),imshow(averageImg,'Initialmagnification','fit');title('average')
 
 %% Normalize (removing mean)
 for i=1:num
@@ -175,14 +174,12 @@ end
 if num == 9
     z  = [ Img.dataAvg{1}  Img.dataAvg{2}   Img.dataAvg{3}  ; Img.dataAvg{4}     Img.dataAvg{5}  Img.dataAvg{6};...
         Img.dataAvg{7}     Img.dataAvg{8}  Img.dataAvg{9}];
-    % Uncommen to show the figure
-%     figure(3),imshow(z,'Initialmagnification','fit');title('z average')
+    figure(3),imshow(z,'Initialmagnification','fit');title('z average')
 end
 
 if num == 6
     z  = [ Img.dataAvg{1}  Img.dataAvg{2}   Img.dataAvg{3}  ; Img.dataAvg{4}     Img.dataAvg{5}  Img.dataAvg{6}];
-    % Uncommen to show the figure
-%     figure(3),imshow(z,'Initialmagnification','fit');title('z average')
+    figure(3),imshow(z,'Initialmagnification','fit');title('z average')
 end
 
 %% Calc Eigenvectors
@@ -193,8 +190,7 @@ for i=1:num
 end
 % Covariance matrix small dimension (transposed)
 Cov_mat = A'*A;
-% Uncommen to show the figure
-% figure(4),imagesc(Cov_mat);title('covariance')
+figure(4),imagesc(Cov_mat);title('covariance')
 
 %% Eigenvectros  in small dimension
 [ Eigvec_V, Eigval_D ]  = eig(Cov_mat);% v num*num e num*num only diagonal 4 eigen values
@@ -211,15 +207,13 @@ diag_eigval=diag(Eigval_D);
 
 if num == 6
     z  = [ Eigenfaces{xci(1)}  Eigenfaces{xci(2)}   Eigenfaces{xci(3)} ; Eigenfaces{xci(4)}     Eigenfaces{xci(5)}   Eigenfaces{xci(6)}];
-    % Uncommen to show the figure
-%     figure(5),imshow(z,'Initialmagnification','fit');title('Eigenfaces')
+    figure(5),imshow(z,'Initialmagnification','fit');title('Eigenfaces')
 end
 
 if num == 9
     z  = [ Eigenfaces{xci(1)}  Eigenfaces{xci(2)}   Eigenfaces{xci(3)} ; Eigenfaces{xci(4)}     Eigenfaces{xci(5)}   Eigenfaces{xci(6)};...
        Eigenfaces{xci(7)}  Eigenfaces{xci(8)}   Eigenfaces{xci(9)} ];
-   % Uncommen to show the figure 
-%    figure(5),imshow(z,'Initialmagnification','fit');title('Eigenfaces')
+    figure(5),imshow(z,'Initialmagnification','fit');title('Eigenfaces')
 end
 %% Weights
 nsel=M% select  eigen faces

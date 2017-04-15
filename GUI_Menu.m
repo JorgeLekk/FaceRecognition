@@ -22,7 +22,7 @@ function varargout = GUI_Menu(varargin)
 
 % Edit the above text to modify the response to help GUI_Menu
 
-% Last Modified by GUIDE v2.5 15-Apr-2017 14:19:14
+% Last Modified by GUIDE v2.5 15-Apr-2017 18:01:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -100,7 +100,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
+assignin ('base', 'CamType',1);
 assignin ('base', 'name', []);
 
 
@@ -175,7 +175,7 @@ function clearWorkspace_Callback(hObject, eventdata, handles)
 % hObject    handle to clearWorkspace (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-evalin( 'base', 'clearvars -except name' )
+evalin( 'base', 'clearvars -except name CamType' )
 
 
 % --- Executes on button press in exit.
@@ -197,3 +197,29 @@ function exit_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to exit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
+
+
+% --- Executes on selection change in webCamChoice.
+function webCamChoice_Callback(hObject, eventdata, handles)
+% hObject    handle to webCamChoice (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns webCamChoice contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from webCamChoice
+choice = get(hObject, 'Value');
+assignin('base', 'CamType',choice)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function webCamChoice_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to webCamChoice (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

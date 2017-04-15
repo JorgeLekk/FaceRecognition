@@ -2,15 +2,16 @@
 % TestPCA for finding yourself from 6 o 9 photos of different people
 %       using PCA Eigenfaces
 
-% Uncommen to do this test apart
+% Uncomment to do this test apart
 % clc
 % clear
 % close all
 
 %% WebCam setup
+% This is commented because it was chosen at GUI_Menu
 %     1 para la webCam normal
 %     2 para la webCam de mi tablet
-            CamType=1;
+%             CamType=1;
 
 %% To see if its necessary to do new snaps
 
@@ -36,7 +37,6 @@
                uiwait(msgbox({'Let`s' Img.mood{i} 'snap'}, 'Be Smart plz','warn','modal'));
                [Img, IFaces, bboxes] = Snapshot (CamType);
                I = HOGFeatures(IFaces,bboxes);
-%                I=ToDoSnap(CamType);
                I=ReSize(I);
                imwrite(I,['Foto_', num2str(i),'.jpg']);
                movefile(strcat('Foto_', num2str(i),'.jpg'),Snap_folder);

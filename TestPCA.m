@@ -35,7 +35,7 @@
 
             for i=1:M
                uiwait(msgbox('Let`s snap', 'Be Smart plz','warn','modal'));
-               [Img, IFaces, bboxes] = Snapshot (CamType);
+               [~, IFaces, bboxes] = Snapshot (CamType);
                I = HOGFeatures(IFaces,bboxes);
                I=ReSize(I);
                imwrite(I,['Foto_', num2str(i),'.jpg']);
@@ -250,7 +250,7 @@ end
 for img_num=1:num  
     face_sumcur=0;
     for(i=1:nsel)
-        face_sumcur = face_sumcur + (face_weight(i) -img_weight(img_num,i)).^2;
+        face_sumcur = face_sumcur + (face_weight(i) - img_weight(img_num,i)).^2;
     end
     diffWeights(img_num) =   sqrt( face_sumcur);
 end

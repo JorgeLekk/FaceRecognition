@@ -49,7 +49,7 @@ Snap_folder =0;
 
             for i=1:num
                 uiwait(msgbox('Let`s snap', 'Be Smart plz','warn','modal'));
-               [Img, IFaces, bboxes] = Snapshot (CamType);
+               [~, IFaces, bboxes] = Snapshot (CamType);
                I = HOGFeatures(IFaces, bboxes);
                I=ReSize(I);
                imwrite(I,['Foto_', num2str(i),'.jpg']);

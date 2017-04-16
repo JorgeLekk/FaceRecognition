@@ -30,6 +30,8 @@
                     disp([choice ' snaps chosen'])
                     M = 9;
             end
+            rmdir('PCATest/Training','s');
+            mkdir('PCATest/Training');
             Snap_folder = 'PCATest/Training';
  
 
@@ -42,16 +44,17 @@
                movefile(strcat('Foto_', num2str(i),'.jpg'),Snap_folder);
                 
             end
-%             TrainingPCA = imageSet(Snap_folder,'recursive');
         end
         
         
         if answer1 == 2
+            rmdir('PCATest/Training','s');
+            mkdir('PCATest/Training');
             % Snaps should be at "PCATest/SavedTraining"
             uiwait(msgbox('Photos have to be at "PCATest/SavedTraining" ', 'WARNING','warn','modal'));
             folder_name = uigetdir('PCATest/SavedTraining','choose pool folder');
 %             TrainingPCA = imageSet(Snap_folder,'recursive');
-            Snap_folder = 'PCATest/SavedTraining';
+            Snap_folder = 'PCATest/Training';
             
         end
         
@@ -209,7 +212,7 @@ NotFinished = false;
 
 while ~NotFinished 
     close (GUI_PCA)
-    answer2 = BoxMenu ('Let´s trying to find Yourself','Do you want a new picture?');
+    answer2 = BoxMenu ('Let´s trying to find Yourself','Let''s take a new picture to compare?');
 
         switch answer2
             case 1

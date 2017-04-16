@@ -37,13 +37,15 @@ Snap_folder =0;
         % Handle response
             switch choice
                 case '6'
+                    rmdir('HOGGTest/Repositorio/You','s');
                     disp([choice ' snaps chosen!'])
                     num = 6;
                 case '9'
+                    rmdir('HOGGTest/Repositorio/You','s');
                     disp([choice ' snaps chosen'])
                     num = 9;
             end
-            
+            mkdir('HOGGTest/Repositorio/You');
             Snap_folder = 'HOGGTest/Repositorio/You';
  
 
@@ -60,7 +62,9 @@ Snap_folder =0;
         
         
         if answer1 == 2
-            % Seleccionamos el Repositorio de Fotos a Entrenar
+            rmdir('HOGGTest/Repositorio/You','s');
+            mkdir('HOGGTest/Repositorio/You');
+            % Choose the folder with photos to train 
             uiwait(msgbox('Choose "Prueba Folder" PLZ', 'Be Smart plz','warn','modal'));
             disp('Selección de Repositorio de tus fotos, sugerencia "Prueba"');
             folder_name = uigetdir('HOGGTest/Prueba','selecciona el repositorio');
@@ -90,6 +94,10 @@ Snap_folder =0;
             imwrite(Img,['Foto_', num2str(i),'.jpg']);
             movefile(strcat('Foto_', num2str(i),'.jpg'),Snap_folder);
         end
+        
+ elseif answer1 == 1
+     MeDatabase = imageSet(Snap_folder, 'recursive');
+     Img = read(MeDatabase(1),1);
  end
 
 %% Show a montage of the training photos
@@ -141,7 +149,7 @@ while ~NotFinished
     pause (10)
 
         %% Decimos si queremos terminar de hacer pruebas
-        answer3 = BoxMenu ('Menu', 'Do you want More Snaps?');    
+        answer3 = BoxMenu ('Menu', 'Let''s take a new picture to compare?');    
 
         switch answer3
         case 1
@@ -151,6 +159,7 @@ while ~NotFinished
             uiwait(msgbox('Bye byeeeeee', 'Haleluyaaa','warn','modal'));
             NotFinished = true;
             close (GUI_HogFeatures)
+            GUI_Menu
             return;
         case 0
             close all

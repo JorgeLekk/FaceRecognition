@@ -35,6 +35,9 @@
                     disp([choice ' snaps chosen'])
                     M = 9;
             end
+%             mkdir('PCATest/NewPool');
+            rmdir('PCAMood/NewPool','s');
+            mkdir('PCAMood/NewPool');
             Snap_folder = 'PCAMood/NewPool';
             
             if M == 6
@@ -52,16 +55,16 @@
                movefile(strcat('Foto_', num2str(i),'.jpg'),Snap_folder);
                 
             end
-%             TrainingPCA = imageSet(Snap_folder,'recursive');
         end
         
         
         if answer1 == 2
+            rmdir('PCAMood/NewPool','s');
+            mkdir('PCAMood/NewPool');
             % Snaps should be at "PCAMood/Pool"
             uiwait(msgbox('Hope your mood pool be at "PCAMood/Pool" ', 'WARNING','warn','modal'));
             folder_name = uigetdir('PCAMood/Pool','choose pool folder');
             Snap_folder = 'PCAMood/Pool';
-%             TrainingPCA = imageSet(Snap_folder,'recursive');
         end
         
         
@@ -227,7 +230,7 @@ NotFinished = false;
 
 while ~NotFinished 
     close (GUI_MoodPCA)
-    answer2 = BoxMenu ('Let´s trying to find Yourself','Do you want a new picture?');
+    answer2 = BoxMenu ('Let´s trying to find Yourself','Let''s take a new picture to compare?');
 
         switch answer2
             case 1

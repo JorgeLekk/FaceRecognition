@@ -44,7 +44,8 @@ mood9 = {'Happy', 'Bored', 'Crazy', 'Angry', 'Sleepy', 'Sad', 'Smart' , 'Thankfu
                     disp([choice ' snaps chosen'])
                     num = 9;
             end
-            
+            rmdir('Together4Ever/BagOfSnaps/You','s');
+            mkdir('Together4Ever/BagOfSnaps/You');
             Snap_folder = 'Together4Ever/BagOfSnaps/You';
             
             if num == 6
@@ -67,6 +68,8 @@ mood9 = {'Happy', 'Bored', 'Crazy', 'Angry', 'Sleepy', 'Sad', 'Smart' , 'Thankfu
         
         
         if answer1 == 2
+            rmdir('Together4Ever/BagOfSnaps/You','s');
+            mkdir('Together4Ever/BagOfSnaps/You');
             % Select a folder with 6 or 9 photos to train them
             uiwait(msgbox('Choose "Together4Ever/Training" folder PLZ', 'Be Smart plz','warn','modal'));
             disp('Selección de Repositorio de tus fotos, sugerencia "Together4Ever/Training"');
@@ -239,7 +242,7 @@ NotFinished = false;
 
 while ~NotFinished 
     close (GUI_TogetherForever)
-    answer2 = BoxMenu ('Let´s trying to find Yourself','Do you want a new picture?');
+    answer2 = BoxMenu ('Let´s trying to find Yourself','Let''s take a new picture to compare?');
     
     switch answer2
             case 1

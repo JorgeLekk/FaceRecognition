@@ -220,7 +220,7 @@ while ~NotFinished
               Icrop = HOGFeatures (IFaces, bboxes);
               testFace = Icrop;
             case 2
-               uiwait(msgbox('Then, choose one :)', 'He he he','warn','modal'));
+               uiwait(msgbox('Then, choose one to compare :)', 'He he he','warn','modal'));
                [file, location] = uigetfile ('*jpg') ;
                I = imread(strcat(location,file));
                % Image proccesing

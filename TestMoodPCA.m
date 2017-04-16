@@ -238,7 +238,7 @@ while ~NotFinished
               Icrop = HOGFeatures (IFaces, bboxes);
               testFace = Icrop;
             case 2
-               uiwait(msgbox('Then, choose one :)', 'He he he','warn','modal'));
+               uiwait(msgbox('Then, choose one to compare :)', 'He he he','warn','modal'));
                [file, location] = uigetfile ('*jpg') ;
                I = imread(strcat(location,file));
                % Image proccesing
@@ -277,7 +277,7 @@ end
 %    Commen to show all figures
     close all
     [val in]=min(diffWeights);
-    diffWeights  =diffWeights.'
+    diffWeights  =diffWeights.';
     [min2, pos] = sort(diffWeights(:));
     val2 = min2(2);
     in2 = pos(2);

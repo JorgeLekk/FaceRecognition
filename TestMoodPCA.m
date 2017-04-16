@@ -64,7 +64,7 @@
             % Snaps should be at "PCAMood/Pool"
             uiwait(msgbox('Hope your mood pool be at "PCAMood/Pool" ', 'WARNING','warn','modal'));
             folder_name = uigetdir('PCAMood/Pool','choose pool folder');
-            Snap_folder = 'PCAMood/Pool';
+            Snap_folder = 'PCAMood/NewPool';
         end
         
         

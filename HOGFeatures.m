@@ -8,7 +8,7 @@ function [Img, hogFeature, visualization] = HOGFeatures (IFaces, bboxes)
 for i = 1:size(bboxes,1)
     J= imcrop(IFaces,bboxes(i,:));
 %     Uncommen to show the image
-%    figure(3),subplot(2,2,i);imshow(J);
+   figure(3),subplot(2,2,i);imshow(J);
 end
 
 [rows columns numberOfColorChannels] = size(J);

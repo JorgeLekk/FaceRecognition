@@ -245,6 +245,7 @@ testFace   =  im2single(testFace);
 %  Uncommen to show the image
 % figure(6), imshow(testFace,'Initialmagnification','fit'); title('Test Face')
 Average_face = testFace(:)-averageImg(:); % normilized face
+% figure (7), imshow(Average_face);
 for(i=1:nsel)
   face_weight(i)  =  sum(Average_face.* Eigenfaces{xci(i)}(:)) ;
 end
